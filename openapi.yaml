@@ -1,0 +1,104 @@
+openapi: 3.0.0
+info:
+  title: Community Benefit Insight API
+  version: "1.0"
+  description: API for accessing detailed hospital data and community benefit information.
+servers:
+  - url: http://www.communitybenefitinsight.org/api/
+paths:
+  /get_hospitals.php:
+    get:
+      summary: Retrieve hospitals list
+      parameters:
+        - name: state
+          in: query
+          description: 2 character state postal code to filter hospitals by state.
+          required: false
+          schema:
+            type: string
+            example: "NC"
+      responses:
+        '200':
+          description: A list of hospitals
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Hospital'
+
+  /get_hospital_data.php:
+    get:
+      summary: Retrieve data for a single hospital
+      parameters:
+        - name: hospital_id
+          in: query
+          description: Internal hospital ID to return all years of data.
+          required: true
+          schema:
+            type: integer
+            example: 1000
+      responses:
+        '200':
+          description: Detailed data of a single hospital
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HospitalData'
+
+components:
+  schemas:
+    Hospital:
+      type: object
+      properties:
+        hospital_id:
+          type: string
+        hospital_org_id:
+          type: string
+        ein:
+          type: string
+        name:
+          type: string
+        street_address:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zip_code:
+          type: string
+        medicare_provider_number:
+          type: string
+        fips_state_and_county_code:
+          type: string
+        hospital_bed_count:
+          type: integer
+        urban_location_f:
+          type: string
+        county:
+          type: string
+        updated_dt:
+          type: string
+
+    HospitalData:
+      type: object
+      properties:
+        hospital_data_id:
+          type: string
+        fiscal_yr:
+          type: string
+        data_ein:
+          type: string
+        data_name:
+          type: string
+        tot_func_exp:
+          type: number
+        tot_revenue:
+          type: number
+        tot_comm_bnfts:
+          type: number
+        updated_dt:
+          type: string
+
